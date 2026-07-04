@@ -1,0 +1,232 @@
+/* ==========================================================================
+   1. GLOBAL ARCHITECTURAL RESETS & DEFAULTS
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #FFFFFF;
+    color: #1E293B;
+}
+
+.max-w-500 { max-width: 500px; }
+.text-dark-blue { color: #0F172A; }
+.bg-light-panel { background-color: #F8FAFC; }
+.select-none { user-select: none; }
+
+/* ==========================================================================
+   2. ENHANCED BRANDING SIDE-PANEL (LEFT SIDE)
+   ========================================================================== */
+.branding-panel {
+    background: #0f172a; 
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Structural overlay design background lines network pattern */
+.bg-grid-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 24px 24px;
+    z-index: 0;
+}
+
+/* Ambient dynamic neon glowing orbs accents */
+.glow-circle-1 {
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    border-radius: 50%;
+    filter: blur(50px);
+    z-index: 0;
+}
+
+.glow-circle-2 {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(234, 179, 8, 0.12) 0%, transparent 70%);
+    bottom: 8%;
+    left: -80px;
+    border-radius: 50%;
+    filter: blur(40px);
+    z-index: 0;
+}
+
+/* Glassmorphic Layout Variable Framework Rules */
+.bg-white-10 { background-color: rgba(255, 255, 255, 0.08); }
+.bg-white-20 { background-color: rgba(255, 255, 255, 0.12); }
+.border-white-10 { border-color: rgba(255, 255, 255, 0.1) !important; }
+.text-white-50 { color: rgba(255, 255, 255, 0.5) !important; }
+.opacity-80 { opacity: 0.8; }
+.tracking-tight { letter-spacing: -0.03em; }
+.xs-text { font-size: 0.78rem; }
+
+.frosted-glass-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateX(6px);
+    background-color: rgba(255, 255, 255, 0.09);
+}
+
+.metric-icon-circle {
+    width: 42px;
+    height: 42px;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+
+/* Keyframe Animations */
+.content-fade-in {
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hover-white:hover {
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   3. ENHANCED RIGHT SIDE WORKSPACE INTERFACE CONTAINER
+   ========================================================================== */
+.login-card-right {
+    max-width: 460px;
+    width: 100%;
+    border: 1px solid #E2E8F0;
+}
+
+/* Custom rounded structural inputs fields box configurations */
+.custom-input-group {
+    background-color: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.custom-input-group:focus-within {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+    background-color: #FFFFFF;
+}
+
+/* Wipe away core native styling defaults safely from inside groups */
+.custom-input-group .form-control {
+    background-color: transparent !important;
+    border: none !important;
+    height: 48px;
+    color: #0F172A;
+    font-size: 0.95rem;
+}
+
+.custom-input-group .form-control:focus {
+    box-shadow: none !important;
+}
+
+.custom-input-group .input-group-text {
+    border: none !important;
+    font-size: 1.05rem;
+    padding-left: 16px;
+    padding-right: 12px;
+}
+
+/* Third Party Auth Pill Components Styling */
+.btn-social {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    height: 44px;
+    color: #475569;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-social:hover {
+    background-color: #F8FAFC;
+    border-color: #CBD5E1;
+}
+
+/* Structural Alignment Text Dividers Class Elements */
+.divider-wrapper .border-top {
+    border-color: #E2E8F0 !important;
+}
+
+/* Primary Form Core Operational Triggers classes styling definitions */
+.btn-primary {
+    height: 48px;
+    border-radius: 10px;
+    background-color: #2563EB;
+    border: none;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1D4ED8;
+}
+
+.btn-glow:hover {
+    box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4) !important;
+}
+
+.btn-primary:active {
+    transform: scale(0.99);
+}
+
+/* Custom Interactive Links Utilities Elements rules definitions */
+.forgot-link {
+    text-decoration: none;
+    color: #2563EB;
+    font-weight: 500;
+    transition: color 0.15s ease;
+}
+
+.forgot-link:hover {
+    color: #1D4ED8;
+    text-decoration: underline;
+}
+
+.text-primary-gradient {
+    color: #2563EB;
+    font-weight: 600;
+}
+
+.hover-link {
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.hover-link:hover {
+    color: #0F172A !important;
+    transform: translateX(-3px);
+}
+
+/* Premium standard dynamic sizing checkbox configurations overriding standard native style */
+.custom-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px !important;
+    border: 1px solid #CBD5E1;
+    cursor: pointer;
+}
+
+.custom-checkbox:checked {
+    background-color: #2563EB;
+    border-color: #2563EB;
+}
