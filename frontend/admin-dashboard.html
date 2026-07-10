@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Console - CourseHub</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box !important;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background: #F4F7FA;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-wrapper {
+            flex: 1 0 auto;
+            width: 100%;
+        }
+
+        .navbar {
+            border-bottom: 1px solid #E2E8F0;
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px);
+        }
+
+        .navbar-brand {
+            color: #0F172A !important;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .page-header h2 {
+            color: #0F172A;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-card {
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 20px;
+            background: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -5px rgba(15, 23, 42, 0.08);
+            border-color: #CBD5E1;
+        }
+
+        .icon-container {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .icon-primary { background: #EFF6FF; color: #2563EB; }
+        .icon-success { background: #ECFDF5; color: #059669; }
+        .icon-warning { background: #FFFBEB; color: #D97706; }
+        .icon-danger { background: #FEF2F2; color: #DC2626; }
+
+        .btn-action-outline {
+            border: 1px solid #CBD5E1;
+            background: white;
+            color: #475569;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-outline:hover {
+            background: #F8FAFC;
+            color: #0F172A;
+            border-color: #94A3B8;
+        }
+
+        .btn-action-primary {
+            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+            color: white;
+            font-weight: 500;
+            border: none;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-primary:hover {
+            background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3);
+            color: white;
+        }
+
+        .custom-table-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        }
+
+        .table th {
+            font-weight: 600;
+            color: #64748B;
+            background-color: #F8FAFC;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            padding: 18px 24px !important;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .table td {
+            padding: 18px 24px !important;
+            vertical-align: middle;
+            color: #334155;
+            border-bottom: 1px solid #F1F5F9;
+            font-size: 0.9rem;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .progress-bar-premium {
+            background: #E2E8F0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .modal-content-premium {
+            border: none;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-label-premium {
+            font-weight: 500;
+            color: #475569;
+            font-size: 0.88rem;
+            margin-bottom: 6px;
+        }
+
+        .form-control-premium, .form-select-premium {
+            padding: 11px 16px;
+            border-radius: 12px;
+            border: 1px solid #D8E2EF;
+            background-color: #FFF;
+            color: #334155;
+            font-size: 0.92rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control-premium:focus, .form-select-premium:focus {
+            border-color: #2563EB;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+            background-color: #FFF;
+        }
+
+        footer {
+            flex-shrink: 0;
+            background: #0F172A;
+            color: #94A3B8;
+            text-align: center;
+            padding: 24px;
+            border-top: 1px solid #1E293B;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+
+    <nav class="navbar navbar-expand-lg sticky-top shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
+                <i class="bi bi-mortarboard-fill text-primary me-2 fs-3"></i>
+                CourseHub
+                <span class="badge bg-primary ms-2">ADMIN</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <span class="badge rounded-pill bg-success px-3 py-2">
+                    <i class="bi bi-circle-fill me-1" style="font-size:7px;"></i>
+                    System Online
+                </span>
+                <a href="index.html" class="btn btn-outline-danger rounded-pill px-4">
+                    <i class="bi bi-box-arrow-right me-1"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="card-body p-5" style="background:linear-gradient(135deg,#2563EB,#1E40AF);color:white;">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <h2 class="fw-bold mb-3">Welcome Administrator 👋</h2>
+                        <p class="opacity-75 fs-5 mb-0">Manage your courses, students, enrollments and reports from one centralized dashboard.</p>
+                    </div>
+                    <div class="col-lg-4 text-end d-none d-lg-block">
+                        <i class="bi bi-kanban-fill display-2 opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <a href="courses.html" class="btn btn-action-outline w-100 py-4 rounded-4 text-decoration-none d-block text-center shadow-sm">
+                    <i class="bi bi-book-half fs-2 text-primary"></i>
+                    <div class="mt-2 fw-semibold">View Courses</div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-action-primary w-100 py-4 rounded-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+                    <i class="bi bi-plus-circle fs-2"></i>
+                    <div class="mt-2 fw-semibold">Add Course</div>
+                </button>
+            </div>
+            <div class="col-md-3">
+                <a href="#studentsSection" class="btn btn-action-outline w-100 py-4 rounded-4 text-decoration-none d-block text-center shadow-sm">
+                    <i class="bi bi-people fs-2 text-success"></i>
+                    <div class="mt-2 fw-semibold">Students</div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-action-outline w-100 py-4 rounded-4 shadow-sm">
+                    <i class="bi bi-bar-chart-line fs-2 text-warning"></i>
+                    <div class="mt-2 fw-semibold">Reports</div>
+                </button>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stat-card p-4 h-100 shadow-sm d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small fw-medium mb-1">Total Courses</div>
+                        <h3 class="fw-bold text-dark mb-0" id="totalCoursesCounter">0</h3>
+                    </div>
+                    <div class="icon-container icon-primary">
+                        <i class="bi bi-journal-text"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card p-4 h-100 shadow-sm d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small fw-medium mb-1">Active Students</div>
+                        <h3 class="fw-bold text-dark mb-0" id="activeStudentsCounter">0</h3>
+                    </div>
+                    <div class="icon-container icon-success">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card p-4 h-100 shadow-sm d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small fw-medium mb-1">Instructors</div>
+                        <h3 class="fw-bold text-dark mb-0" id="totalInstructorsCounter">0</h3>
+                    </div>
+                    <div class="icon-container icon-warning">
+                        <i class="bi bi-person-badge-fill"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card p-4 h-100 shadow-sm d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small fw-medium mb-1">Avg Completion</div>
+                        <h3 class="fw-bold text-dark mb-0" id="avgCompletionCounter">0%</h3>
+                    </div>
+                    <div class="icon-container icon-danger">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4 align-items-center">
+            <div class="col">
+                <h4 class="fw-bold text-dark mb-0">Track Operations</h4>
+            </div>
+            <div class="col-md-5">
+                <div class="input-group shadow-sm">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Search Courses...">
+                </div>
+            </div>
+        </div>
+
+        <div class="card custom-table-card shadow-sm mb-5">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3 border-bottom">
+                <h5 class="fw-bold mb-0 text-dark">
+                    <i class="bi bi-journal-bookmark-fill text-primary me-2"></i>
+                    Available Courses
+                </h5>
+                <span class="badge bg-primary px-3 py-2">Course List</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Instructor</th>
+                            <th>Duration</th>
+                            <th>Students</th>
+                            <th>Progress</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card custom-table-card shadow-sm mb-5" id="studentsSection">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3 border-bottom">
+                <h5 class="fw-bold mb-0 text-dark">
+                    <i class="bi bi-people-fill text-success me-2"></i>
+                    Enrolled Students
+                </h5>
+                <span class="badge bg-success px-3 py-2">Live Enrollments</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Course</th>
+                            <th>Enrolled</th>
+                            <th>Progress</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-content-premium shadow">
+            <div class="modal-header border-bottom px-4 py-3 bg-light">
+                <h5 class="modal-title fw-bold text-dark fs-6">Initialize New Instructional Track</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addCourseForm">
+                <div class="modal-body p-4 bg-white">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label-premium">Course Title</label>
+                            <input type="text" id="courseTitleInput" class="form-control-premium form-control w-100" required placeholder="e.g., Cloud Native Computing">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-premium">Categorization Tag</label>
+                            <select id="courseCategorySelect" class="form-select-premium form-select w-100" required>
+                                <option value="web">Web Architecture & Engineering</option>
+                                <option value="ai">Artificial Intelligence Foundations</option>
+                                <option value="ml">Machine Learning Systems</option>
+                                <option value="security">Cyber Security Frameworks</option>
+                                <option value="analytics">Enterprise Data Analytics</option>
+                                <option value="mobile">Mobile Logic Platforms</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-premium">Course Duration</label>
+                            <input type="text" id="courseDurationInput" class="form-control-premium form-control w-100" required placeholder="e.g., 10 weeks">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-premium">Mentor Name</label>
+                            <input type="text" id="mentorNameInput" class="form-control-premium form-control w-100" required placeholder="e.g., Dr. Marcus Vance">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label-premium">Source URL Pathway for Cover Image</label>
+                            <input type="url" id="courseImageInput" class="form-control-premium form-control w-100" placeholder="https://domain.com/asset-pathway.png">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label-premium">Subtext / Track Description Metadata</label>
+                            <textarea id="courseDescriptionInput" class="form-control-premium form-control w-100" rows="4" required placeholder="Outline module parameters, structural tracks, or prerequisite conditions targeted during initialization."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top px-4 py-3 bg-light">
+                    <button type="button" class="btn btn-light px-4 border rounded-3 fw-medium small" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-action-primary px-4 rounded-3 small">Register Configuration</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p class="mb-0 opacity-75">&copy; 2026 Student Course Management System. Secure Administrative Gateway.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+<script src="coursehub-data.js"></script>
+
+<script>
+    document.getElementById('addCourseForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const title = document.getElementById('courseTitleInput').value.trim();
+        const duration = document.getElementById('courseDurationInput').value.trim();
+        const mentor = document.getElementById('mentorNameInput').value.trim();
+        const category = document.getElementById('courseCategorySelect').value;
+
+        const courses = CourseHub.getCourses();
+
+        const newCourse = {
+            id: CourseHub.slugify(title),
+            title: title,
+            mentor: mentor,
+            duration: duration,
+            category: category,
+            students: 0,
+            progress: 0,
+            color: "secondary",
+            modules: ["Module 1", "Module 2", "Module 3", "Module 4", "Module 5"]
+        };
+
+        courses.push(newCourse);
+        CourseHub.saveCourses(courses);
+
+        renderCoursesTable();
+        renderStudentsTable();
+        renderStatCounters();
+
+        const modalEl = document.getElementById('addCourseModal');
+        if (modalEl) {
+            const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+            modalInstance.hide();
+        }
+
+        this.reset();
+    });
+
+    function deleteCourse(courseId) {
+        const courses = CourseHub.getCourses().filter(c => c.id !== courseId);
+        CourseHub.saveCourses(courses);
+
+        // also drop any enrollments tied to the deleted course
+        const enrollments = CourseHub.getEnrollments().filter(e => e.courseId !== courseId);
+        CourseHub.saveEnrollments(enrollments);
+
+        renderCoursesTable();
+        renderStudentsTable();
+        renderStatCounters();
+    }
+
+    function unenrollStudent(enrollmentId) {
+        CourseHub.unenrollStudent(enrollmentId);
+        renderCoursesTable();
+        renderStudentsTable();
+        renderStatCounters();
+    }
+
+    function renderCoursesTable(filterText = '') {
+        const tbody = document.getElementById('courseTableBody');
+        if (!tbody) return;
+
+        const combinedTracks = CourseHub.getCourses();
+        tbody.innerHTML = '';
+
+        combinedTracks.forEach((track) => {
+            if (filterText && !track.title.toLowerCase().includes(filterText.toLowerCase()) && !track.mentor.toLowerCase().includes(filterText.toLowerCase())) {
+                return;
+            }
+
+            const row = document.createElement('tr');
+            const barColor = track.color || 'secondary';
+
+            row.innerHTML = `
+                <td class="fw-semibold text-dark">${track.title}</td>
+                <td>${track.mentor}</td>
+                <td>${track.duration}</td>
+                <td>${track.students}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="progress flex-grow-1 me-2" style="height:8px;">
+                            <div class="progress-bar bg-${barColor}" style="width:${track.progress}%;"></div>
+                        </div>
+                        <small class="fw-medium text-muted">${track.progress}%</small>
+                    </div>
+                </td>
+                <td class="text-end">
+                    <button class="btn btn-link text-danger p-0 border-0" onclick="deleteCourse('${track.id}')">
+                        <i class="bi bi-trash3-fill fs-5"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function renderStudentsTable() {
+        const tbody = document.getElementById('studentTableBody');
+        if (!tbody) return;
+
+        const enrollments = CourseHub.getEnrollments();
+        tbody.innerHTML = '';
+
+        if (!enrollments.length) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No enrollments yet — once a student enrolls in a course it will show up here.</td>
+                </tr>`;
+            return;
+        }
+
+        enrollments.forEach((enr) => {
+            const statusBadge = enr.status === 'completed'
+                ? '<span class="badge bg-success-subtle text-success">Completed</span>'
+                : '<span class="badge bg-primary-subtle text-primary">Ongoing</span>';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <div class="fw-semibold text-dark">${enr.studentName}</div>
+                    <small class="text-muted">${enr.studentEmail}</small>
+                </td>
+                <td>${enr.courseTitle}</td>
+                <td>${enr.enrolledDate}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="progress flex-grow-1 me-2" style="height:8px;">
+                            <div class="progress-bar bg-${enr.color || 'primary'}" style="width:${enr.progress}%;"></div>
+                        </div>
+                        <small class="fw-medium text-muted">${enr.progress}%</small>
+                    </div>
+                </td>
+                <td>${statusBadge}</td>
+                <td class="text-end">
+                    <button class="btn btn-link text-danger p-0 border-0" onclick="unenrollStudent('${enr.id}')" title="Remove enrollment">
+                        <i class="bi bi-x-circle-fill fs-5"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function renderStatCounters() {
+        const stats = CourseHub.getAdminStats();
+        const totalCoursesCounter = document.getElementById('totalCoursesCounter');
+        const totalInstructorsCounter = document.getElementById('totalInstructorsCounter');
+        const activeStudentsCounter = document.getElementById('activeStudentsCounter');
+        const avgCompletionCounter = document.getElementById('avgCompletionCounter');
+
+        if (totalCoursesCounter) totalCoursesCounter.textContent = stats.totalCourses;
+        if (totalInstructorsCounter) totalInstructorsCounter.textContent = stats.totalInstructors;
+        if (activeStudentsCounter) activeStudentsCounter.textContent = stats.activeStudents;
+        if (avgCompletionCounter) avgCompletionCounter.textContent = `${stats.avgCompletion}%`;
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        renderCoursesTable(e.target.value.trim());
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        CourseHub.syncCourseStats();
+        renderCoursesTable();
+        renderStudentsTable();
+        renderStatCounters();
+    });
+</script>
+</body>
+</html>
