@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate - CourseHub</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+        }
+        .navbar-brand-custom {
+            font-weight: 700;
+            color: #0d6efd;
+        }
+
+        /* --- Certificate --- */
+        .cert-stage {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+        .certificate {
+            position: relative;
+            background: #fffdf8;
+            border-radius: 6px;
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.12);
+            padding: 56px 64px;
+            overflow: hidden;
+        }
+        .certificate::before {
+            content: "";
+            position: absolute;
+            inset: 14px;
+            border: 1.5px solid #c9a24b;
+            pointer-events: none;
+        }
+        .certificate::after {
+            content: "";
+            position: absolute;
+            inset: 20px;
+            border: 1px solid #c9a24b;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .cert-eyebrow {
+            letter-spacing: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #94765a;
+            text-transform: uppercase;
+        }
+        .cert-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            font-size: 2.6rem;
+            color: #1e293b;
+            letter-spacing: 1px;
+        }
+        .cert-subtext {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+        .cert-name {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.2rem;
+            color: #0d6efd;
+            margin: 10px 0 4px;
+            line-height: 1.1;
+        }
+        .cert-course {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: 1.6rem;
+            color: #1e293b;
+        }
+        .cert-divider {
+            width: 80px;
+            height: 3px;
+            background: #c9a24b;
+            margin: 18px auto;
+            border-radius: 2px;
+        }
+        .cert-seal {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #c9a24b, #e8c877);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2rem;
+            box-shadow: 0 6px 16px rgba(201, 162, 75, 0.4);
+            margin: 0 auto;
+        }
+        .cert-sign-line {
+            border-top: 1.5px solid #94765a;
+            padding-top: 6px;
+            max-width: 220px;
+            margin: 0 auto;
+        }
+        .cert-meta {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        .action-bar {
+            max-width: 980px;
+            margin: 24px auto 0;
+        }
+
+        .locked-icon {
+            font-size: 3.2rem;
+            color: #cbd5e1;
+        }
+
+        @media print {
+            body {
+                background: #fff !important;
+            }
+            nav, .action-bar, .no-print {
+                display: none !important;
+            }
+            .cert-stage {
+                max-width: 100%;
+            }
+            .certificate {
+                box-shadow: none;
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-white bg-white border-bottom sticky-top py-3 no-print">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom fs-4 d-flex align-items-center" href="student-dashboard.html">
+                <i class="bi bi-mortarboard-fill me-2 text-warning"></i> CourseHub
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <a href="progress.html" class="text-decoration-none text-dark fw-medium small">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Progress
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+
+        <!-- Locked state: shown when the course isn't finished yet -->
+        <div id="lockedState" class="cert-stage d-none">
+            <div class="card border-0 rounded-4 shadow-sm p-5 text-center bg-white">
+                <i class="bi bi-lock-fill locked-icon mb-3"></i>
+                <h4 class="fw-bold text-dark mb-2">Certificate Not Unlocked Yet</h4>
+                <p class="text-muted mb-1" id="lockedCourseTitle"></p>
+                <div class="progress mx-auto my-3" style="max-width: 360px; height: 10px;">
+                    <div class="progress-bar bg-warning" id="lockedProgressBar" style="width:0%"></div>
+                </div>
+                <p class="text-muted small mb-4" id="lockedProgressText"></p>
+                <a href="progress.html" class="btn btn-primary rounded-pill px-4 mx-auto">
+                    Complete Remaining Modules <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Not found / unauthorized state -->
+        <div id="notFoundState" class="cert-stage d-none">
+            <div class="card border-0 rounded-4 shadow-sm p-5 text-center bg-white">
+                <i class="bi bi-exclamation-triangle locked-icon mb-3 text-danger"></i>
+                <h4 class="fw-bold text-dark mb-2">Certificate Not Found</h4>
+                <p class="text-muted mb-4">We couldn't find an enrollment matching this certificate link.</p>
+                <a href="student-dashboard.html" class="btn btn-primary rounded-pill px-4 mx-auto">Back to Dashboard</a>
+            </div>
+        </div>
+
+        <!-- Certificate -->
+        <div id="certState" class="d-none">
+            <div class="cert-stage">
+                <div class="certificate text-center">
+                    <div class="cert-eyebrow mb-2">CourseHub &bull; Certificate of Completion</div>
+                    <div class="cert-seal mb-3"><i class="bi bi-award-fill"></i></div>
+                    <div class="cert-title">Certificate of Completion</div>
+                    <p class="cert-subtext mt-2 mb-0">This is proudly presented to</p>
+                    <div class="cert-name" id="certStudentName">&mdash;</div>
+                    <p class="cert-subtext mb-0">for successfully completing all modules of</p>
+                    <div class="cert-course mt-2" id="certCourseTitle">&mdash;</div>
+                    <div class="cert-divider"></div>
+
+                    <div class="row justify-content-center mt-4 gx-5">
+                        <div class="col-auto text-center">
+                            <div class="cert-sign-line" id="certMentorName">&mdash;</div>
+                            <div class="cert-meta mt-1">Course Mentor</div>
+                        </div>
+                        <div class="col-auto text-center">
+                            <div class="cert-sign-line" id="certDate">&mdash;</div>
+                            <div class="cert-meta mt-1">Date Completed</div>
+                        </div>
+                    </div>
+
+                    <p class="cert-meta mt-4 mb-0" id="certVerify"></p>
+                </div>
+
+                <div class="action-bar d-flex justify-content-center gap-2 no-print">
+                    <button class="btn btn-primary rounded-pill px-4" onclick="window.print()">
+                        <i class="bi bi-printer-fill me-1"></i> Print / Save as PDF
+                    </button>
+                    <a href="progress.html" class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Progress
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="coursehub-data.js"></script>
+    <script>
+        function showOnly(id) {
+            ['lockedState', 'notFoundState', 'certState'].forEach(sectionId => {
+                document.getElementById(sectionId).classList.toggle('d-none', sectionId !== id);
+            });
+        }
+
+        function formatDate(isoDate) {
+            if (!isoDate) return '\u2014';
+            const d = new Date(isoDate + 'T00:00:00');
+            return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!CourseHub.isLoggedIn()) {
+                const params = new URLSearchParams(window.location.search);
+                const enrollmentId = params.get('enrollmentId') || '';
+                window.location.href = `user-login.html?redirect=certificate.html${enrollmentId ? '&enrollmentId=' + enrollmentId : ''}`;
+                return;
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const enrollmentId = params.get('enrollmentId');
+            const user = CourseHub.getCurrentUser();
+            const enrollment = enrollmentId ? CourseHub.getEnrollmentById(enrollmentId) : null;
+
+            // Must exist and must belong to the logged-in student.
+            if (!enrollment || enrollment.studentId !== user.id) {
+                showOnly('notFoundState');
+                return;
+            }
+
+            if (enrollment.status !== 'completed') {
+                document.getElementById('lockedCourseTitle').textContent = enrollment.courseTitle;
+                document.getElementById('lockedProgressBar').style.width = `${enrollment.progress}%`;
+                const remaining = enrollment.modules.filter(m => !m.completed).length;
+                document.getElementById('lockedProgressText').textContent =
+                    `${enrollment.progress}% complete \u2014 ${remaining} module${remaining === 1 ? '' : 's'} left to finish.`;
+                showOnly('lockedState');
+                return;
+            }
+
+            document.getElementById('certStudentName').textContent = enrollment.studentName;
+            document.getElementById('certCourseTitle').textContent = enrollment.courseTitle;
+            document.getElementById('certMentorName').textContent = enrollment.mentor;
+            document.getElementById('certDate').textContent = formatDate(enrollment.completedDate);
+            document.getElementById('certVerify').textContent =
+                `Certificate ID: ${enrollment.id.toUpperCase()}  \u00b7  Verify at CourseHub`;
+            document.title = `Certificate - ${enrollment.courseTitle} - CourseHub`;
+
+            showOnly('certState');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - CourseHub</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: #F8FAFC; color: #1E293B; }
+        .logo { color: #2563EB !important; font-size: 24px; letter-spacing: -0.5px; }
+        .nav-link { font-weight: 500; margin: 0 10px; color: #475569 !important; transition: color 0.2s ease; }
+        .nav-link:hover, .nav-link.active { color: #2563EB !important; }
+        .bg-primary-soft { background-color: rgba(37, 99, 235, 0.1); }
+
+        .page-header { background: #0F172A; padding: 56px 0 40px; }
+
+        .filter-pill {
+            border-radius: 30px; padding: 7px 18px; font-weight: 500; font-size: 14px;
+            border: 1px solid #E2E8F0; background: white; color: #475569;
+            transition: all 0.15s ease; cursor: pointer;
+        }
+        .filter-pill.active { background: #2563EB; border-color: #2563EB; color: white; }
+        .filter-pill:hover:not(.active) { border-color: #2563EB; color: #2563EB; }
+
+        .notif-card {
+            background: white; border: 1px solid #E2E8F0; border-radius: 14px;
+            border-left: 4px solid transparent; transition: box-shadow 0.15s ease, transform 0.15s ease;
+        }
+        .notif-card:hover { box-shadow: 0 8px 20px -6px rgba(15, 23, 42, 0.08); transform: translateY(-1px); }
+        .notif-card.unread { border-left-color: #2563EB; background: rgba(37, 99, 235, 0.035); }
+
+        .notif-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 20px;
+        }
+        .notif-icon.type-new_course  { background: rgba(6, 182, 212, 0.12); color: #0891B2; }
+        .notif-icon.type-enrollment  { background: rgba(37, 99, 235, 0.12); color: #2563EB; }
+        .notif-icon.type-certificate { background: rgba(245, 158, 11, 0.14); color: #B45309; }
+
+        .unread-dot { width: 8px; height: 8px; border-radius: 50%; background: #2563EB; flex-shrink: 0; }
+
+        .empty-state i { font-size: 52px; color: #CBD5E1; }
+
+        footer { background: #1E293B; color: white; text-align: center; padding: 24px; margin-top: 80px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold logo" href="index.html">
+                <i class="bi bi-mortarboard-fill me-2"></i>CourseHub
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="courses.html">Courses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="student-dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="notifications.html">Notifications</a></li>
+                </ul>
+                <div class="d-flex gap-2 flex-wrap" id="navAuthArea">
+                    <div class="dropdown">
+                        <a class="btn btn-outline-primary dropdown-toggle px-4" href="#" role="button" data-bs-toggle="dropdown">Login</a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                            <li><a class="dropdown-item" href="user-login.html"><i class="bi bi-person me-2"></i>User Login</a></li>
+                            <li><a class="dropdown-item" href="admin-login.html"><i class="bi bi-shield-lock me-2"></i>Admin Login</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a class="btn btn-primary dropdown-toggle px-4" href="#" role="button" data-bs-toggle="dropdown">Register</a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                            <li><a class="dropdown-item" href="user-register.html"><i class="bi bi-person-plus me-2"></i>User Register</a></li>
+                            <li><a class="dropdown-item" href="admin-register.html"><i class="bi bi-shield-plus me-2"></i>Admin Register</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <span class="badge bg-primary-soft text-primary px-3 py-2 mb-3 fs-6">Stay in the loop</span>
+            <h1 class="display-6 fw-bold text-white mb-2">Notifications</h1>
+            <p class="text-white-50 mb-0">New courses, enrollment confirmations, and certificates — all in one place.</p>
+        </div>
+    </div>
+
+    <!-- Shown when nobody is logged in -->
+    <div class="container py-5" id="loggedOutBody" style="display:none;">
+        <div class="mx-auto text-center py-5" style="max-width: 460px;">
+            <i class="bi bi-bell-slash display-4 text-muted mb-3 d-block"></i>
+            <h4 class="fw-bold mb-2">Log in to see your notifications</h4>
+            <p class="text-muted mb-4">New course alerts, enrollment confirmations, and certificate updates only show up once you're signed in.</p>
+            <a href="user-login.html?redirect=notifications.html" class="btn btn-primary px-4 py-2 me-2">Log In</a>
+            <a href="user-register.html" class="btn btn-outline-primary px-4 py-2">Register</a>
+        </div>
+    </div>
+
+    <!-- Shown once a student is logged in -->
+    <div class="container py-5" id="notifBody" style="display:none;">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+            <div class="d-flex flex-wrap gap-2" id="filterPills">
+                <button class="filter-pill active" data-filter="all">All</button>
+                <button class="filter-pill" data-filter="new_course">New Courses</button>
+                <button class="filter-pill" data-filter="enrollment">Enrollments</button>
+                <button class="filter-pill" data-filter="certificate">Certificates</button>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm px-3" id="markAllReadBtn">
+                <i class="bi bi-check2-all me-1"></i>Mark all as read
+            </button>
+        </div>
+
+        <div class="d-flex flex-column gap-3" id="notifList"></div>
+
+        <div class="empty-state text-center py-5 d-none" id="emptyState">
+            <i class="bi bi-inbox d-block mb-3"></i>
+            <h5 class="fw-bold mb-1">Nothing here yet</h5>
+            <p class="text-muted mb-0">Enroll in a course to start getting updates.</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container text-center text-md-between d-md-flex align-items-center justify-content-between">
+            <p class="mb-2 mb-md-0 opacity-75">&copy; 2026 Student Course Management System. All rights reserved.</p>
+            <div class="d-flex gap-3 justify-content-center">
+                <a href="#" class="text-white opacity-75 text-decoration-none small">Privacy Policy</a>
+                <a href="#" class="text-white opacity-75 text-decoration-none small">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="coursehub-data.js"></script>
+    <script src="course-player.js"></script>
+    <script>
+        const ICONS = {
+            new_course:  'bi-collection-play-fill',
+            enrollment:  'bi-mortarboard-fill',
+            certificate: 'bi-award-fill'
+        };
+        const LABELS = {
+            new_course:  'New course',
+            enrollment:  'Enrollment',
+            certificate: 'Certificate'
+        };
+
+        let activeFilter = 'all';
+
+        function timeAgo(isoDate) {
+            const diffMs = Date.now() - new Date(isoDate).getTime();
+            const mins = Math.floor(diffMs / 60000);
+            if (mins < 1) return 'Just now';
+            if (mins < 60) return mins + (mins === 1 ? ' minute ago' : ' minutes ago');
+            const hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + (hrs === 1 ? ' hour ago' : ' hours ago');
+            const days = Math.floor(hrs / 24);
+            if (days < 30) return days + (days === 1 ? ' day ago' : ' days ago');
+            return new Date(isoDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // Mirrors the COURSE_PAGES mapping in courses.html so a notification
+        // can link straight to the right course page. Keep this in sync if
+        // you add more courses there.
+        const COURSE_PAGES = {
+            "python-masterclass": "python-course.html",
+            "fullstack-dev": "fullstack-course.html",
+            "ai-foundations": "ai-foundations.html",
+            "gen-ai": "generative-ai.html",
+            "cyber-security": "cyber-security.html",
+            "data-analytics": "data-analytics.html",
+            "cross-platform-mobile": "cross-platform-mobile.html",
+            "advanced-mobile": "advanced-mobile.html",
+            "reinforcement-learning": "reinforcement-learning.html",
+            "nlp": "nlp-course.html",
+            "mlops": "mlops-course.html",
+            "devops": "devops-course.html"
+        };
+
+        function courseHref(courseId) {
+            if (!courseId) return null;
+            return COURSE_PAGES[courseId] || ('course-content.html?courseId=' + encodeURIComponent(courseId));
+        }
+
+        function renderList() {
+            const user = CourseHub.getCurrentUser();
+            const list = document.getElementById('notifList');
+            const emptyState = document.getElementById('emptyState');
+            if (!user) return;
+
+            const all = CourseHub.getNotificationsForStudent(user.id);
+            const filtered = activeFilter === 'all' ? all : all.filter(n => n.type === activeFilter);
+
+            list.innerHTML = '';
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('d-none');
+                return;
+            }
+            emptyState.classList.add('d-none');
+
+            filtered.forEach(function (n) {
+                const card = document.createElement('div');
+                card.className = 'notif-card p-3 d-flex gap-3 align-items-start ' + (n.read ? '' : 'unread');
+                card.style.cursor = 'pointer';
+
+                const href = courseHref(n.courseId);
+                const actionBtn = href
+                    ? '<a href="' + href + '" class="btn btn-sm btn-outline-primary mt-2">View course</a>'
+                    : '';
+
+                card.innerHTML =
+                    '<div class="notif-icon type-' + n.type + '"><i class="bi ' + (ICONS[n.type] || 'bi-bell') + '"></i></div>' +
+                    '<div class="flex-grow-1">' +
+                    '  <div class="d-flex align-items-center gap-2 mb-1">' +
+                    '    <span class="badge bg-light text-dark border small fw-normal">' + (LABELS[n.type] || 'Update') + '</span>' +
+                    '    <span class="text-muted small">' + timeAgo(n.date) + '</span>' +
+                    '  </div>' +
+                    '  <p class="fw-semibold mb-1">' + n.title + '</p>' +
+                    '  <p class="text-muted small mb-0">' + n.message + '</p>' +
+                    '  ' + actionBtn +
+                    '</div>' +
+                    (n.read ? '' : '<span class="unread-dot mt-2" title="Unread"></span>');
+
+                card.addEventListener('click', function () {
+                    if (!n.read) {
+                        CourseHub.markNotificationRead(n.id);
+                        CoursePlayer.renderAuthNav();
+                        renderList();
+                    }
+                });
+
+                list.appendChild(card);
+            });
+        }
+
+        document.getElementById('filterPills').addEventListener('click', function (e) {
+            const btn = e.target.closest('.filter-pill');
+            if (!btn) return;
+            activeFilter = btn.getAttribute('data-filter');
+            document.querySelectorAll('.filter-pill').forEach(function (p) { p.classList.remove('active'); });
+            btn.classList.add('active');
+            renderList();
+        });
+
+        document.getElementById('markAllReadBtn').addEventListener('click', function () {
+            const user = CourseHub.getCurrentUser();
+            if (!user) return;
+            CourseHub.markAllNotificationsRead(user.id);
+            CoursePlayer.renderAuthNav();
+            renderList();
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!CourseHub.isLoggedIn()) {
+                document.getElementById('loggedOutBody').style.display = 'block';
+                return;
+            }
+            document.getElementById('notifBody').style.display = 'block';
+            renderList();
+        });
+    </script>
+</body>
+</html>

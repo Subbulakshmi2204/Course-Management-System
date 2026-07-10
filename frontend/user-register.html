@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration - CourseHub</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="login.css">
+    <script src="coursehub-data.js"></script>
+</head>
+<body>
+
+<div class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
+
+        <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-between p-5 branding-panel position-relative">
+
+            <div class="bg-grid-overlay"></div>
+            <div class="glow-circle-1"></div>
+            <div class="glow-circle-2"></div>
+
+            <div class="position-relative z-1">
+                <a class="navbar-brand fw-bold text-white fs-3 d-flex align-items-center" href="index.html">
+                    <i class="bi bi-mortarboard-fill me-2 text-warning"></i> CourseHub
+                </a>
+            </div>
+
+            <div class="my-auto position-relative z-1 text-white max-w-500 content-fade-in">
+                <span class="badge bg-white-10 border border-white-10 rounded-pill px-3 py-2 mb-3">
+                    <i class="bi bi-person-plus-fill text-info me-2"></i>
+                    New Student
+                </span>
+
+                <h1 class="display-5 fw-bold mb-3">
+                    Start Learning<br>
+                    Today.
+                </h1>
+
+                <p class="lead fs-6 opacity-75">
+                    Create your student account to enroll in courses, track module progress, and earn certificates as you complete each track.
+                </p>
+
+                <div class="mt-5 d-flex flex-column gap-3">
+                    <div class="frosted-glass-card p-3 rounded-4 border border-white-10 d-flex align-items-center gap-3 feature-item">
+                        <div class="metric-icon-circle bg-white-20 rounded-circle d-flex align-items-center justify-content-center text-success">
+                            <i class="bi bi-mortarboard-fill"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-semibold text-white">Learn at your own pace</p>
+                            <small class="text-white-50">Progress saves automatically as you go.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="position-relative z-1 text-white-50 small border-top border-white-10 pt-3">
+                &copy; 2026 CourseHub Ecosystem
+            </div>
+
+        </div>
+
+        <div class="col-lg-6 d-flex align-items-center justify-content-center bg-light-panel p-4">
+
+            <div class="login-card-right bg-white rounded-4 shadow p-5 content-fade-in">
+
+                <div class="d-lg-none text-center mb-4">
+                    <h3 class="fw-bold text-primary">
+                        <i class="bi bi-mortarboard-fill text-warning me-2"></i>CourseHub
+                    </h3>
+                </div>
+
+                <div id="registerFormContainer">
+                    <h2 class="fw-bold text-dark-blue">Create Student Account</h2>
+                    <p class="text-muted mb-4">Sign up to start enrolling in courses.</p>
+
+                    <div id="registerAlert" class="alert d-none" role="alert"></div>
+
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Full Name</label>
+                            <div class="input-group custom-input-group">
+                                <span class="input-group-text bg-transparent"><i class="bi bi-person"></i></span>
+                                <input type="text" id="nameInput" class="form-control" placeholder="Jane Doe" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Email Address</label>
+                            <div class="input-group custom-input-group">
+                                <span class="input-group-text bg-transparent"><i class="bi bi-envelope"></i></span>
+                                <input type="email" id="emailInput" class="form-control" placeholder="you@example.com" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Password</label>
+                            <div class="input-group custom-input-group position-relative">
+                                <span class="input-group-text bg-transparent"><i class="bi bi-lock"></i></span>
+                                <input type="password" id="regPassword" class="form-control pe-5" placeholder="Minimum 8 characters" minlength="8" required>
+                                <button type="button" class="btn position-absolute end-0 top-50 translate-middle-y border-0 bg-transparent" onclick="toggleRegPassword('regPassword', 'eyeIcon1')">
+                                    <i class="bi bi-eye" id="eyeIcon1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-medium">Confirm Password</label>
+                            <div class="input-group custom-input-group position-relative">
+                                <span class="input-group-text bg-transparent"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" id="confirmPassword" class="form-control pe-5" placeholder="Repeat your password" required>
+                                <button type="button" class="btn position-absolute end-0 top-50 translate-middle-y border-0 bg-transparent" onclick="toggleRegPassword('confirmPassword', 'eyeIcon2')">
+                                    <i class="bi bi-eye" id="eyeIcon2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input custom-checkbox" type="checkbox" id="terms" required>
+                            <label class="form-check-label text-muted small" for="terms">
+                                I agree to the Terms of Service and Privacy Policy.
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 btn-glow">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-0">Already have an account?
+                            <a href="user-login.html" id="loginLink" class="text-primary-gradient text-decoration-none">Sign In Here</a>
+                        </p>
+
+                        <a href="index.html" class="text-decoration-none hover-link">
+                            <i class="bi bi-arrow-left"></i> Back to Home
+                        </a>
+                    </div>
+                </div>
+
+                <div id="registerSuccessContainer" class="d-none text-center">
+                    <div class="alert alert-success d-flex align-items-center justify-content-center gap-2 mb-4" role="alert">
+                        <i class="bi bi-check-circle-fill"></i> Account created! Welcome to CourseHub.
+                    </div>
+                    <a href="student-dashboard.html" id="goToDashboardBtn" class="btn btn-warning w-100 shadow-md fw-semibold py-3 d-flex align-items-center justify-content-center gap-2 btn-glow text-dark">
+                        <i class="bi bi-speedometer2"></i> Student Dashboard <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function toggleRegPassword(inputId, iconId){
+    const p = document.getElementById(inputId);
+    const i = document.getElementById(iconId);
+    if(p.type === "password"){
+        p.type = "text";
+        i.className = "bi bi-eye-slash";
+    } else {
+        p.type = "password";
+        i.className = "bi bi-eye";
+    }
+}
+
+function showRegisterAlert(message, type) {
+    const box = document.getElementById('registerAlert');
+    box.className = `alert alert-${type}`;
+    box.innerHTML = message;
+    box.classList.remove('d-none');
+}
+
+function buildDashboardUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const redirectTarget = params.get('redirect') || 'student-dashboard.html';
+    const courseId = params.get('courseId');
+    return courseId ? `${redirectTarget}?courseId=${courseId}` : redirectTarget;
+}
+
+function buildLoginUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const qs = params.toString();
+    return qs ? `user-login.html?${qs}` : 'user-login.html';
+}
+
+document.getElementById('loginLink').href = buildLoginUrl();
+
+document.getElementById('registerForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (password !== confirmPassword) {
+        showRegisterAlert('Passwords do not match. Please try again.', 'danger');
+        return;
+    }
+
+    const result = CourseHub.registerUser({ name, email, password });
+
+    if (!result.success) {
+        if (result.error === 'exists') {
+            showRegisterAlert(
+                `An account already exists for <strong>${email}</strong>. ` +
+                `<a href="${buildLoginUrl()}" class="alert-link">Log in instead</a>.`,
+                'warning'
+            );
+        } else {
+            showRegisterAlert('Something went wrong creating your account. Please try again.', 'danger');
+        }
+        return;
+    }
+
+    // Auto sign-in right after registering
+    CourseHub.loginUser(email, password);
+
+    document.getElementById('registerFormContainer').classList.add('d-none');
+    document.getElementById('registerSuccessContainer').classList.remove('d-none');
+
+    const dashboardUrl = buildDashboardUrl();
+    document.getElementById('goToDashboardBtn').href = dashboardUrl;
+    setTimeout(() => { window.location.href = dashboardUrl; }, 1200);
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

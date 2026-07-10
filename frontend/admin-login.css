@@ -1,0 +1,218 @@
+/* ==========================================
+   1. CORE STYLE & UTILITIES
+   ========================================== */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7f6;
+    overflow-x: hidden;
+}
+
+.max-w-500 {
+    max-width: 500px;
+}
+
+/* Custom Gradients and Colors */
+.text-dark-blue {
+    color: #0f172a;
+}
+
+.text-primary-gradient {
+    background: linear-gradient(135deg, #0d6efd, #00d2ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+}
+
+/* Utility Transparent Borders and Backgrounds */
+.border-white-10 {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.bg-white-10 {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.bg-white-20 {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ==========================================
+   2. LEFT PANEL: BRANDING & EFFECTS
+   ========================================== */
+.branding-panel {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    overflow: hidden;
+}
+
+/* Cyber-style Grid Overlay */
+.bg-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+    z-index: 0;
+}
+
+/* Ambient Glowing Orbs */
+.glow-circle-1, .glow-circle-2 {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.25;
+    z-index: 0;
+}
+
+.glow-circle-1 {
+    width: 350px;
+    height: 350px;
+    background: #0d6efd;
+    top: -50px;
+    left: -50px;
+}
+
+.glow-circle-2 {
+    width: 400px;
+    height: 400px;
+    background: #00d2ff;
+    bottom: -50px;
+    right: -50px;
+}
+
+/* Frosted Glass UI Elements */
+.frosted-glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.frosted-glass-card:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.metric-icon-circle {
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+}
+
+/* ==========================================
+   3. RIGHT PANEL: LOGIN FORM
+   ========================================== */
+.bg-light-panel {
+    background-color: #f8fafc;
+}
+
+.login-card-right {
+    width: 100%;
+    max-width: 480px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Custom Input Styling */
+.custom-input-group {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: #fff;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.custom-input-group:focus-within {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+}
+
+.custom-input-group .input-group-text {
+    border: none;
+    color: #94a3b8;
+    padding-left: 1rem;
+}
+
+.custom-input-group .form-control {
+    border: none;
+    padding: 0.75rem 1rem;
+    color: #334155;
+}
+
+.custom-input-group .form-control:focus {
+    box-shadow: none;
+}
+
+/* Toggle Password Visibility Custom Styling */
+.custom-input-group button i {
+    color: #64748b;
+    font-size: 1.15rem;
+    transition: color 0.2s;
+}
+
+.custom-input-group button:hover i {
+    color: #0d6efd;
+}
+
+/* Custom Checkbox */
+.custom-checkbox {
+    cursor: pointer;
+}
+
+.custom-checkbox:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Buttons and Links */
+.btn-glow {
+    padding: 0.75rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 14px rgba(13, 110, 253, 0.3);
+    transition: all 0.2s ease;
+}
+
+.btn-glow:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.45);
+}
+
+.hover-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-top: 1.5rem;
+    transition: color 0.2s;
+}
+
+.hover-link:hover {
+    color: #0d6efd;
+}
+
+.hover-link i {
+    transition: transform 0.2s;
+}
+
+.hover-link:hover i {
+    transform: translateX(-3px);
+}
+
+/* ==========================================
+   4. ANIMATIONS
+   ========================================== */
+.content-fade-in {
+    animation: fadeInSlide 0.6s ease-out forwards;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
